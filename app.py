@@ -165,7 +165,7 @@ with col1:
 
         dados_filtrados["CidadeUF"] = (
             dados_filtrados[col_cidade].str.upper()
-            + " - "
+            + " "
             + dados_filtrados[col_estado]
         )
 
