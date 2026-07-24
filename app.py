@@ -201,7 +201,7 @@ with col1:
         st.info("Colunas de localidade não encontradas para o gráfico.")
 
 
-# --- BLOCO 2: MAPA ---
+# --- BLOCO 2: MAPA DO BRASIL ---
 with col2:
     st.subheader("📍 Origem dos Inscritos")
 
