@@ -92,9 +92,6 @@ def encontrar_coluna(df, nomes_possiveis):
     return None
 
 
-# --- TÍTULO PRINCIPAL ---
-st.title("🚴 23/08/2026 Pedal Piratuba")
-
 # --- BOTÕES DE NAVEGAÇÃO POR CATEGORIA ---
 categoria = st.segmented_control(
     "Selecione a Categoria:",
