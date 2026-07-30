@@ -324,3 +324,85 @@ styler = df.style.set_table_styles(
 )
 
 st.dataframe(styler, hide_index=True, use_container_width=True)
+
+# ---------------------------------------------------------------
+# --- CONSULTA: PESSOAS EM OUTRAS ABAS QUE NÃO ESTÃO NO GERAL ---
+st.write("---")
+st.subheader("🔍 Pessoas em Outras Abas Ausentes da Aba GERAL")
+
+# 1. Carrega todas as categorias que compõem a visão GERAL
+dfs_geral = []
+for nome_cat in CATEGORIAS_GERAL:
+  gid_cat = ABAS.get(nome_cat)
+  if gid_cat is not None:
+    try:
+      t = carregar(gid_cat)
+      if not t.empty:
+        dfs_geral.append(t)
+    except Exception:
+      pass
+
+df_base_geral = (
+    pd.concat(dfs_geral, ignore_index=True) if dfs_geral else pd.DataFrame()
+)
+
+# Identifica a coluna de nome na base GERAL
+col_nome_geral = encontrar_coluna(
+    df_base_geral, ["nome", "atleta", "inscrito", "participante"]
+)
+
+if (
+    col_nome_geral
+    and col_nome_geral in df_base_geral.columns
+    and not df_base_geral.empty
+):
+  # Lista padronizada de nomes presentes no GERAL
+  nomes_geral = set(
+      df_base_geral[col_nome_geral]
+      .astype(str)
+      .str.strip()
+      .str.upper()
+      .unique()
+  )
+  nomes_geral.discard("")  # descarta valores em branco
+
+  resultados_ausentes = []
+
+  # 2. Percorre cada aba individual para verificar ausências
+  for nome_aba, gid_aba in ABAS.items():
+    if gid_aba is None:
+      continue
+
+    df_aba = carregar(gid_aba)
+    col_nome_aba = encontrar_coluna(
+        df_aba, ["nome", "atleta", "inscrito", "participante"]
+    )
+
+    if col_nome_aba and col_nome_aba in df_aba.columns:
+      for idx, row in df_aba.iterrows():
+        nome_pessoa = str(row[col_nome_aba]).strip()
+        nome_upper = nome_pessoa.upper()
+
+        # Se o nome é válido e NÃO está no conjunto do GERAL
+        if (
+            nome_pessoa
+            and nome_upper not in ["", "NAN", "NONE"]
+            and nome_upper not in nomes_geral
+        ):
+          resultados_ausentes.append({
+              "Nome": nome_pessoa,
+              "Aba onde foi encontrado": nome_aba,
+          })
+
+  # 3. Exibição do resultado
+  if resultados_ausentes:
+    df_resultado = pd.DataFrame(resultados_ausentes).drop_duplicates()
+    st.warning(
+        f"Foram encontradas **{len(df_resultado)}** pessoa(s) em outras abas que"
+        " NÃO constam na aba GERAL:"
+    )
+    st.dataframe(df_resultado, use_container_width=True, hide_index=True)
+  else:
+    st.success("🎉 Todas as pessoas listadas nas abas também constam na aba GERAL!")
+else:
+  st.error("Não foi possível identificar a coluna de nomes no GERAL.")
