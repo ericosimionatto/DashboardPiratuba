@@ -328,7 +328,7 @@ st.dataframe(styler, hide_index=True, use_container_width=True)
 # ---------------------------------------------------------------
 # --- CONSULTA: PESSOAS EM OUTRAS ABAS QUE NÃO ESTÃO NO GERAL ---
 st.write("---")
-st.subheader("🔍 Compraram outros ingressos, e NÃO compraram ingresso do Pedal")
+st.subheader("🔍 Compraram outros ingressos, mas NÃO compraram ingresso do Pedal")
 
 # 1. Carrega todas as categorias que compõem a visão GERAL
 dfs_geral = []
