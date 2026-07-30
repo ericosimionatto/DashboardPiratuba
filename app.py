@@ -20,6 +20,7 @@ ABAS = {
     "SPORT MAS": 310681045,
     "PRO FEM": 250811187,
     "PRO MAS": 1318274495,
+    "City Tour dia 22/08": 971261230,
 }
 
 CACHE_FILE = "coordenadas_cache.json"
