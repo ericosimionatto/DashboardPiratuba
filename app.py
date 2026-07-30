@@ -328,7 +328,7 @@ st.dataframe(styler, hide_index=True, use_container_width=True)
 # ---------------------------------------------------------------
 # --- CONSULTA: PESSOAS EM OUTRAS ABAS QUE NÃO ESTÃO NO GERAL ---
 st.write("---")
-st.subheader("🔍 Pessoas em Outras Abas Ausentes da Aba GERAL")
+st.subheader("🔍 Pessoas que compram outros ingressos e NÃO compraram ingresso do Pedal")
 
 # 1. Carrega todas as categorias que compõem a visão GERAL
 dfs_geral = []
@@ -398,11 +398,10 @@ if (
   if resultados_ausentes:
     df_resultado = pd.DataFrame(resultados_ausentes).drop_duplicates()
     st.warning(
-        f"Foram encontradas **{len(df_resultado)}** pessoa(s) em outras abas que"
-        " NÃO constam na aba GERAL:"
+        f"{len(df_resultado)}** pessoa(s) sem inscrição pro pedal:"
     )
     st.dataframe(df_resultado, use_container_width=True, hide_index=True)
   else:
-    st.success("🎉 Todas as pessoas listadas nas abas também constam na aba GERAL!")
+    st.success("🎉 Piratuba 23/08/2026!")
 else:
-  st.error("Não foi possível identificar a coluna de nomes no GERAL.")
+  st.error("Participantes do Pedal.")
