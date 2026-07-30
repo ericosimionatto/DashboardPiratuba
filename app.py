@@ -23,6 +23,16 @@ ABAS = {
     "City Tour dia 22/08": 971261230,
 }
 
+# Define quais abas farão parte da totalização no GERAL (exclui o 'City Tour dia 22/08')
+CATEGORIAS_GERAL = [
+    "LIGHT",
+    "EBIKE",
+    "SPORT FEM",
+    "SPORT MAS",
+    "PRO FEM",
+    "PRO MAS",
+]
+
 CACHE_FILE = "coordenadas_cache.json"
 
 CORES_ESTADOS = {
@@ -84,10 +94,8 @@ def carregar(gid):
   df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
   df.columns = df.columns.astype(str).str.strip()
 
-  # 1. Remove linhas totalmente vazias (todos os valores nulos/NaN)
+  # Remove linhas totalmente vazias ou que contenham apenas espaços em branco
   df = df.dropna(how="all")
-
-  # 2. Remove linhas onde todas as células são vazias ou contêm apenas espaços
   linhas_validas = df.apply(
       lambda row: row.astype(str).str.strip().str.len().sum() > 0, axis=1
   )
@@ -116,7 +124,9 @@ if not categoria:
 # --- CARREGAMENTO DOS DADOS ---
 if categoria == "GERAL":
   dfs = []
-  for nome, gid in ABAS.items():
+  # Carrega exclusivamente as abas definidas na lista CATEGORIAS_GERAL
+  for nome in CATEGORIAS_GERAL:
+    gid = ABAS.get(nome)
     if gid is None:
       continue
     try:
@@ -137,7 +147,7 @@ df.columns = df.columns.str.strip()
 df = df.fillna("")
 df = df.replace(["None", "none", "nan", "NaN"], "")
 
-# Garante a filtragem global de linhas em que todas as colunas ficaram em branco após a substituição
+# Garante a filtragem de linhas que contenham só texto em branco
 if not df.empty:
   df = df[df.apply(lambda row: row.astype(str).str.strip().ne("").any(), axis=1)]
 
