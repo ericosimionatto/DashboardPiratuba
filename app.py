@@ -20,7 +20,11 @@ ABAS = {
     "SPORT MAS": 310681045,
     "PRO FEM": 250811187,
     "PRO MAS": 1318274495,
-    "City Tour dia 22/08": 971261230,
+    "City Tour": 971261230,
+    "Almoço Ad. Adulto": 1193796668,
+    "Almoço Ad. Infantil": 183066336,    
+    "5 Choop BERG": 1502844235,    
+    "R$ 5,00 Doação Bombeiros/APAE": 2109328800,    
 }
 
 # Define quais abas farão parte da totalização no GERAL (exclui o 'City Tour dia 22/08')
